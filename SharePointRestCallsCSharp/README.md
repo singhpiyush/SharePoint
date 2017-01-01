@@ -1,5 +1,5 @@
 # SharePoint
-In this sample, I have demonstrated how to make SharePoint REST calls from client side. Here, I have used a C# Console Application to fetch the following:
+In this sample, I have demonstrated how to invoke SharePoint REST calls from client side. Here, I have used a C# Console Application to fetch the following:
 * the given Web's` property
 * selected List's property
 * ListItems (only 1 using $top)

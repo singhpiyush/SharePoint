@@ -70,7 +70,7 @@ namespace SharePointRestCallsCSharp
         }
 
         /// <summary>
-        /// Initiates SharePoint REST call
+        /// Invokes SharePoint REST call
         /// </summary>
         /// <param name="restUrlSuffix">REST url query</param>
         /// <param name="fileName">(optional) Name of the file where the json output will be dumped.</param>

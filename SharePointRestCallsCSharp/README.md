@@ -1,4 +1,4 @@
-# SharePoint
+# Invoke SharePoint REST calls from C# application
 In this sample, I have demonstrated how to invoke SharePoint REST calls from client side. Here, I have used a C# Console Application to fetch the following:
 * the given Web's` property
 * selected List's property

@@ -3,5 +3,6 @@ In this repository, I'll be sharing SharePoint utilities for both, online and on
 
 * Export Import Managed Metedata. 
 * Invoke SharePoint REST calls from C# application.
+* Comparing SharePoint REST API Items and GetItems.
 
-Also, you can always visit my [blog] (https://realmpksharepoint.wordpress.com/) to get latest updates.
+Also, you can always visit my [blog] (https://piyushksingh.com/) to get the latest updates.

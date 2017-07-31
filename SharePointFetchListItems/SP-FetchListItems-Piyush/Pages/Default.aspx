@@ -26,7 +26,7 @@
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server">
-    Page Title
+    Comparison
 </asp:Content>
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>

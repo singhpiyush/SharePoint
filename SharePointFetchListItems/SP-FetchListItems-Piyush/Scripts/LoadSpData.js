@@ -1,6 +1,4 @@
 ﻿var PK = function () {
-    //783A6040-E88C-4675-A49F-155A9C37B437 = Sales Order Details
-    //9DED7E87-7BDD-4845-A849-E6C0A67EA635 = Task
 }
 
 PK.prototype.getQueryStringParameter = function (paramToRetrieve) {
@@ -18,7 +16,6 @@ PK.prototype.items = function () {
     var executor = new SP.RequestExecutor(appweburl);
 
     executor.executeAsync({
-        //url: appweburl + "/_api/Sp.AppContextSite(@target)/Web/Lists(guid'9DED7E87-7BDD-4845-A849-E6C0A67EA635')/items?$select=AssignedTo/ID,AssignedTo/Name&$expand=AssignedTo&@target='" + hostWebUrl + "'",
         url: appweburl + "/_api/Sp.AppContextSite(@target)/Web/Lists(guid'783A6040-E88C-4675-A49F-155A9C37B437')/items?$select=Customer%5Fx0020%5FContinent,Customer%5Fx0020%5FCountry,OrderDate,Total%5Fx0020%5FPurchase%5Fx0020%5FAmoun&@target='" + hostWebUrl + "'",
         method: "GET",
         scope: this,
@@ -34,7 +31,6 @@ PK.prototype.getitems = function () {
     var executor = new SP.RequestExecutor(appweburl);
 
     executor.executeAsync({
-        //url: "appweburl/_api/Sp.AppContextSite(@target)/Web/Lists(guid'9DED7E87-7BDD-4845-A849-E6C0A67EA635')/getitems?$select=AssignedTo/ID,AssignedTo/Name&$expand=AssignedTo&@target='" + hostWebUrl + "'",
         url: appweburl + "/_api/Sp.AppContextSite(@target)/Web/Lists(guid'783A6040-E88C-4675-A49F-155A9C37B437')/getitems?$select=Customer%5Fx0020%5FContinent,Customer%5Fx0020%5FCountry,OrderDate,Total%5Fx0020%5FPurchase%5Fx0020%5FAmoun&@target='" + hostWebUrl + "'",
         method: "POST",
         scope: this,
@@ -43,19 +39,10 @@ PK.prototype.getitems = function () {
             "X-RequestDigest": $("#__REQUESTDIGEST").val(),
             "content-type": "application/json; odata=verbose"
         },
-        //body: '"{"query":{"__metadata":{"type":"SP.CamlQuery"},"ViewXml":"<View><Query><OrderBy><FieldRef Name=\"OrderID\" /></OrderBy></Query></View>"}}"',
         body: JSON.stringify({ "query": { "__metadata": { "type": "SP.CamlQuery" }, "ViewXml": "<View><Query><OrderBy><FieldRef Name=\"OrderID\" /></OrderBy></Query></View>" } }),
         success: PK.prototype.successHandlerGetItems,
         error: PK.prototype.errorHandlerGetItems
     });
-
-    /*<View>
-	    <Query>
-		    <OrderBy>
-			    <FieldRef Name=\"ID\" />
-		    </OrderBy>
-	    </Query>
-    </View>*/
 }
 
 PK.prototype.errorHandlerItems = function (err) {
@@ -64,7 +51,6 @@ PK.prototype.errorHandlerItems = function (err) {
 
 PK.prototype.successHandlerItems = function (data) {
     //success
-    //console.log(data);
     this.scope.createTable(data, "Items", "itemsData");
 }
 
@@ -74,13 +60,11 @@ PK.prototype.errorHandlerGetItems = function (err) {
 
 PK.prototype.successHandlerGetItems = function (data) {
     //success
-    //console.log(data);
     this.scope.createTable(data, "GetItems", "getItemsData");
 }
 
 PK.prototype.createTable = function (data, name, divId) {
     var dataObj = JSON.parse(data.body).d;
-    //dataObj.__next
 
     var tbody = document.createElement('tbody');
     var trh = document.createElement('tr');
@@ -128,9 +112,6 @@ PK.prototype.SPDecode = function (toDecode) {
     var repl2 = new RegExp('_', 'g');
 
     return unescape(toDecode.replace(repl1, "%u").replace(repl2, ""));
-    //document.write(decodedString);
-
-    //return unescape(decodedString);
 }
 
 var fetchItems = function () {

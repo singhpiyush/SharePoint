@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="dec57789-2c53-4923-b9f6-4dec24c2f908" 
+        solutionId="dec57789-2c53-4923-b9f6-4dec24c2f908" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="SP_ExpandListItemData_Piyush"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="47f49e1b-6dd0-40f1-80ce-e7134833a90d" />
+  </features>
+</package>

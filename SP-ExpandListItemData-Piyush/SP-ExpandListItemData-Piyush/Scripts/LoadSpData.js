@@ -119,7 +119,7 @@ PK.prototype.onQuerySucceeded = function () {
 }
 
 PK.prototype.onQueryFailed = function () {
-    debugger;
+    
 }
 
 /* ==============================================================

@@ -10,6 +10,127 @@ PK.prototype.getQueryStringParameter = function (paramToRetrieve) {
     }
 };
 
+/* ==============================================================
+* JSOM - Start
+* =============================================================== */
+
+PK.prototype.jsomItems = function () {
+    var ctx = new SP.ClientContext('/PkTeamSite-Sub2');
+    var oList = ctx.get_web().get_lists().getByTitle('BlogTask-Piyush');
+
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml("<View><Query/><ViewFields><FieldRef Name=\"DueDate\" /><FieldRef Name=\"AssignedTo\" /><FieldRef Name=\"Blog_x0020_State\" /><FieldRef Name=\"Predecessors\" /></ViewFields></View>");
+    this.collListItem = oList.getItems(camlQuery);
+
+    ctx.load(this.collListItem);
+
+    ctx.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+PK.prototype.onQuerySucceeded = function () {
+    var get_items = (_oListItem, curProp) => {
+        var appendStringIdentifier = (objToTest, identifier) => {
+            if (objToTest && objToTest.trim().length > 0) {
+                objToTest += identifier;
+            }
+
+            return objToTest;
+        }
+
+        var lookup = oListItem.get_item(curProp);
+        var res = '';
+        var updateRes = (curVal, _prop) => {
+            $.each(curVal, function (lIndx, lItm) {
+                res = appendStringIdentifier(res, ' ');
+                res += _prop ? lItm[_prop] : lItm.get_lookupValue();
+            });
+        };
+        if (Array.isArray(lookup)) {
+            if (lookup.length > 0) {
+                updateRes(lookup);
+            }
+        } else if (lookup._Child_Items_) {
+            updateRes(lookup._Child_Items_, 'Label');
+        } else {
+            res = lookup;
+        }
+        return res;
+    };
+
+    var tbody = document.createElement('tbody');
+    var trh = document.createElement('tr');
+    var allProp = ['Predecessors', 'AssignedTo', 'Blog_x0020_State', 'DueDate'];
+
+    $.each(allProp, function (_indx, _itm) {
+        var th = document.createElement('th');
+        th.className = 'tHead';
+        th.appendChild(document.createTextNode(_itm));
+        trh.appendChild(th);
+    })
+
+    tbody.appendChild(trh);
+
+    var listItemInfo = '';
+
+    var listItemEnumerator = this.collListItem.getEnumerator();
+
+    while (listItemEnumerator.moveNext()) {
+
+        var oListItem = listItemEnumerator.get_current();
+
+        var tr = document.createElement('tr');
+        $.each(allProp, function (_indx, _itm) {
+            var td = document.createElement('td');
+            td.className = 'tBody';
+            var displayTextCell;
+            switch (_itm) {
+                case allProp[0]:
+                    displayTextCell = get_items(oListItem, allProp[0]);
+                    break;
+                case allProp[1]:
+                    displayTextCell = get_items(oListItem, allProp[1]);
+                    break;
+                case allProp[2]:
+                    displayTextCell = get_items(oListItem, allProp[2]);
+                    break;
+                default:
+                    displayTextCell = new Date(get_items(oListItem, allProp[3])).toDateString();
+                    break;
+            }
+
+            td.appendChild(document.createTextNode(displayTextCell));
+            tr.appendChild(td);
+        })
+        tbody.appendChild(tr);
+    }
+
+    var table = document.createElement('table');
+    table.className = 'tbl';
+    table.appendChild(tbody);
+
+    var _h1 = document.createElement('h1');
+    _h1.innerText = 'Using JSOM';
+
+    var divHd = document.createElement('div');
+    divHd.appendChild(_h1);
+
+    document.getElementById('pkDivId').appendChild(divHd);
+    document.getElementById('pkDivId').appendChild(table);
+}
+
+PK.prototype.onQueryFailed = function () {
+    
+}
+
+/* ==============================================================
+* JSOM - End
+* =============================================================== */
+
+
+/* ==============================================================
+* REST - Start
+* =============================================================== */
+
 PK.prototype.items = function () {
     var hostWebUrl = decodeURIComponent(PK.prototype.getQueryStringParameter('SPHostUrl'));
     var appweburl = decodeURIComponent(PK.prototype.getQueryStringParameter('SPAppWebUrl'));
@@ -154,6 +275,10 @@ PK.prototype.createTable = function (data, name, divId) {
     document.getElementById(divId).appendChild(table);
 }
 
+/* ==============================================================
+* REST - End
+* =============================================================== */
+
 //decode hex col name. Ex "Total_x0020_Purchase_x0020_Amoun" will de decoded to "Total Purchase Amoun" 
 PK.prototype.SPDecode = function (toDecode) {
     var repl1 = new RegExp('_x', 'g');
@@ -166,7 +291,8 @@ var fetchItems = function () {
     $(document).ready(function () {
         PK.prototype.items();
         PK.prototype.getitems();
-    })
+        //PK.prototype.jsomItems();
+    });
 }
 
 ExecuteOrDelayUntilScriptLoaded(fetchItems, "sp.js");

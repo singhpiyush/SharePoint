@@ -1,0 +1,5 @@
+D:\Piyush\SourceCode\Temp\SP-Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\bin\Debug\Expand-GetItemsListItemData-Piyush.pdb
+D:\Piyush\SourceCode\Temp\SP-Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\obj\Debug\Expand-GetItemsListItemData-Piyush.csproj.CoreCompileInputs.cache
+D:\Piyush\SourceCode\Temp\SP-Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\obj\Debug\Expand-GetItemsListItemData-Piyush.dll
+D:\Piyush\SourceCode\Temp\SP-Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\obj\Debug\Expand-GetItemsListItemData-Piyush.pdb
+D:\Piyush\SourceCode\Temp\SP-Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\Expand-GetItemsListItemData-Piyush\obj\Debug\Expand-GetItemsListItemData-Piyush.csprojResolveAssemblyReference.cache

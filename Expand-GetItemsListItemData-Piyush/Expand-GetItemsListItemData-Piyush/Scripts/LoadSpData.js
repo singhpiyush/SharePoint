@@ -33,7 +33,7 @@
     };
 
     successHandler(data) {
-        this.scope.createTable(data, 'CAML');
+        this.scope.createTable(data, 'FieldValuesAsText');
     };
 
     createTable() {

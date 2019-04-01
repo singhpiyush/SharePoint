@@ -1,16 +1,9 @@
 ﻿Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Taxonomy.dll"
-#Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Taxonomy.Portable.dll"
-
-#[System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SharePoint.Taxonomy")
-#Add-PSSnapin "Microsoft.Online.SharePoint.PowerShell"
 
 $global = @{}
 
-#$context,
-#$list,
-#$listItem,
 $file
 $fieldCollection = New-Object 'System.Collections.Generic.Dictionary[String, Microsoft.SharePoint.Client.Taxonomy.TaxonomyField]'
 $completedNavs = @{}
@@ -35,20 +28,16 @@ function GetTermStore
 
     $termStore = $TermStores[0]
     $global.context.Load($termStore)
-    #$global.context.ExecuteQuery()
 
     $groups = $termStore.Groups
     $global.context.Load($groups)
-    #$global.context.ExecuteQuery()
 
     $groupReports = $groups.GetByName($file.grpName)
     $global.context.Load($groupReports)
-    #$global.context.ExecuteQuery()
 
     $termSetField = $groupReports.TermSets.GetByName($termSetName)
 
     $global.context.Load($termSetField)
-    #$global.context.ExecuteQuery()
 
     $terms = $termSetField.Terms.GetByName($termName)
     $global.context.Load($terms)
@@ -68,7 +57,6 @@ function GetList
     $list = $lists.GetByTitle($file.listName)
     $global.context.ExecuteQuery()
 
-    #return $list
     $global.list = $list
 }
 
@@ -138,15 +126,6 @@ function IntializeContext
 
     $global.context = $context
 
-    <#$quickLaunchColl = $context.Web.Navigation.QuickLaunch
-    $nodeCreation = New-Object Microsoft.SharePoint.Client.NavigationNodeCreationInformation
-    $nodeCreation.Title = "T1"
-    $nodeCreation.Url = "/teams/PK-TeamSite1/Shared%20Documents/Forms/AllItems.aspx?useFiltersInViewXml=1&FilterField1=dcmProcess&FilterValue1=1&FilterType1=Count
-er&FilterLookupId1=1&FilterOp1=In"
-
-    $quickLaunchColl.Add($nodeCreation)
-    $context.Load($quickLaunchColl)
-    $context.ExecuteQuery()#>
 }
 
 function UpdateListItem
@@ -216,10 +195,7 @@ function AddNavigation
 
     if($isConnect)
     {
-        #Connect-PnPOnline -Url $global.context.Url -Credentials $global.context.Credentials
-        #Connect-PnPOnline -Url $global.context.Url
-        ConnectToPnpOnline
-        
+        ConnectToPnpOnline   
     }
 
     if(AllowNavCreation $title $header)
@@ -233,7 +209,6 @@ function AddNavigation
 
 function ConnectToPnpOnline
 { 
-    #$global:userCredential = new-object -typename System.Management.Automation.PSCredential -argumentlist "auser email address", $SecurePWD
     $userCredential = new-object -typename System.Management.Automation.PSCredential -argumentlist $file.userName, $file.$pwd
     Connect-PnPOnline -Url $global.context.Url -Credentials $userCredential 
 
@@ -283,7 +258,6 @@ function GetFieldInternalName
         [Parameter(mandatory=$true)] $columnName
     )
 
-    #return if($file.fields[$columnName].Length -gt 0) { $file.fields[$columnName] } else { $columnName }
     if($file.fields[$columnName].Length -gt 0) { return $file.fields[$columnName] } else { return $columnName }
 }
 
@@ -353,11 +327,6 @@ function InitiateNavCreation
 
     ParseCSV $file.csvFilePath
 
-#Read more: http://www.sharepointdiary.com/2017/08/sharepoint-online-update-managed-metadata-column-value-using-powershell.html#ixzz5cy6zXijj
-
-
-#Read more: http://www.sharepointdiary.com/2017/08/sharepoint-online-update-managed-metadata-column-value-using-powershell.html#ixzz5cxgBMqgv
-
 }
 
 function ClearObjects
@@ -371,11 +340,11 @@ function ClearObjects
     Disconnect-PnPOnline
 }
 
-<#try
+try
 {
     InitiateNavCreation
-}#>
-<#catch
+}
+catch
 {
     Write-Host $_.Exception.Message -ForegroundColor Red
     Write-Host $_.Exception.ItemName -ForegroundColor Red
@@ -384,8 +353,4 @@ function ClearObjects
 finally
 {
     ClearObjects
-}#>
-
-InitiateNavCreation
-
-ClearObjects
+}

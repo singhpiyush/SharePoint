@@ -1,4 +1,4 @@
-Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
+﻿Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.dll"
 Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Taxonomy.dll"
 #Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Taxonomy.Portable.dll"
@@ -295,7 +295,7 @@ function ParseCSV
 
     $csvFileContent = Import-Csv -Path $csvFilePath
     $csvLength = $csvFileContent.Count
-    $csvHeaders = (($csvFileContent[0] | out-string) -split '\n')[1] -split '\s+'
+    $csvHeaders = (($csvFileContent[0] | out-string) -split '\n')[1] -split '\s \s+'
 
     $i = -1
     $isContinue = $true

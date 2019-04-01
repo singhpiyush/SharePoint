@@ -2,6 +2,7 @@
 Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Runtime.dll"
 Add-Type -Path "C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI\Microsoft.SharePoint.Client.Taxonomy.dll"
 
+#GLOBAL Objects
 $global = @{}
 
 $file
@@ -10,7 +11,16 @@ $completedNavs = @{}
 
 function GetTermStore 
 {
+    <#
+    # Gets the specific Term from a given TermSet
 
+    # .Parameter $termSetName
+    # The name of the TermSet
+
+    # .Parameter $termName
+    # Name of the Term
+
+    #>
     Param(
         [Parameter(Mandatory)][string] $termSetName,
         [Parameter(Mandatory)][string] $termName
@@ -32,6 +42,7 @@ function GetTermStore
     $groups = $termStore.Groups
     $global.context.Load($groups)
 
+    #Loading the Term Group from the config file
     $groupReports = $groups.GetByName($file.grpName)
     $global.context.Load($groupReports)
 
@@ -48,13 +59,14 @@ function GetTermStore
 
 function GetList
 {
-    Param(
-        $listName
-    )
+    <#
+    # Gets the list/library based on the name provided in the config file
+
+    #>
 
     $lists = $global.context.web.Lists
     $global.context.Load($lists)
-    $list = $lists.GetByTitle($file.listName)
+    $list = $lists.GetByTitle($file.listName) #Name
     $global.context.ExecuteQuery()
 
     $global.list = $list
@@ -62,6 +74,14 @@ function GetList
 
 function GetField
 {
+    <#
+    # Gets the SharePoint Field for which the filter URL needs to be generated
+
+    # .Parameter $fieldName
+    # The name of the field. InternalName or Title
+
+    #>
+
     Param(
         $fieldName
     )
@@ -71,14 +91,24 @@ function GetField
         $field = $global.list.Fields.GetByInternalNameOrTitle($fieldName)
         $global.context.ExecuteQuery()
 
+        #Create a cache of field so as to not fetch the same field again and again
         $fieldCollection.Add($fieldName, [Microsoft.SharePoint.Client.ClientContext].GetMethod("CastTo").MakeGenericMethod([Microsoft.SharePoint.Client.Taxonomy.TaxonomyField]).Invoke($global.context, $field))
     }
 
+    #returns the cached value
     return $fieldCollection[$fieldName]
 }
 
 function GetListItem
 {
+    <#
+    # Gets a fixed listitem onetime to constantly update its property in order to generate the unique WSSID
+
+    # .Parameter $isForce
+    # Forces the application to fetch an item
+
+    #>
+
     Param(
         [boolean] $isForce
     )
@@ -95,6 +125,17 @@ function GetListItem
 
 function GetTermFieldValue
 {
+    <#
+    # Gets the TaxonomyFieldValue to update the list item
+
+    # .Parameter $termSetName
+    # Name of the TermSet
+
+    # .Parameter $termName
+    # Name of the Term
+
+    #>
+
     Param(
         [Parameter(Mandatory)][string] $termSetName,
         [Parameter(Mandatory)][string] $termName
@@ -112,6 +153,20 @@ function GetTermFieldValue
 
 function IntializeContext
 {
+    <#
+    # Initializes the global client context 
+
+    # .Parameter $userName
+    # UserName to connect to SharePoint
+
+    # .Parameter $pwd
+    # Password to connect to SharePoint
+
+    # .Parameter $siteUrl
+    # Site URL where this operation is to be conducted
+
+    #>
+
     Param(
         [Parameter(mandatory=$true)] $userName,
         [Parameter(mandatory=$true)] $pwd,
@@ -130,6 +185,20 @@ function IntializeContext
 
 function UpdateListItem
 {
+    <#
+    # Updates the given listItem with a term value to generate its unique WssId
+
+    # .Parameter $fieldName 
+    # The name of the field to be updated
+
+    # .Parameter $termsetName
+    # The name of the TermSet
+
+    # .Parameter $columnValue
+    # TaxonomyFieldValue to be updated
+
+    #>
+
     Param (
         [Parameter(mandatory=$true)] $fieldName,
         [Parameter(mandatory=$true)] $termsetName,
@@ -146,6 +215,14 @@ function UpdateListItem
 
 function GetWssId
 {
+    <# 
+    # Gets the unique WssId for a given TermSet
+
+    # .Parameter $fieldName
+    # The fieldName from which the value is to be extracted
+
+    #>
+
     Param (
         [Parameter(mandatory=$true)]
         [string] 
@@ -157,6 +234,17 @@ function GetWssId
 
 function ContructNavUrl
 {
+    <#
+    # Contructs the dynamic NAV URL to be used to directly navigate to the filtered view
+
+    # .Parameter $wssId
+    # The unique WssId of a Term
+
+    # .Parameter $fieldName
+    # The name of the field being used
+
+    #>
+
     Param (
         [Parameter(mandatory=$true)]
         [string] 
@@ -173,6 +261,26 @@ function ContructNavUrl
 
 function AddNavigation
 {
+    <#
+    # Adds a Navigation to the SharePoint site
+
+    # .Parameter $title
+    # Nav title
+
+    # .Parameter $wssId
+    # Unique WssId
+
+    # .Parameter $fieldInternalName
+    # The internal name of the field
+
+    # .Parameter $header
+    # If it's a child NAV then, provide a header/parent
+
+    # .Parameter $isConnect
+    # If connect to PnP is required or not. Required only first time
+
+    #>
+
     Param (
         [Parameter(mandatory=$true)]
         [string] 
@@ -209,13 +317,22 @@ function AddNavigation
 
 function ConnectToPnpOnline
 { 
+    <#
+    # Connects to PnPOnline in order to create the NAV. Reusing the credential from the context to avoid prompting the same again
+
+    #>
+
     $userCredential = new-object -typename System.Management.Automation.PSCredential -argumentlist $file.userName, $file.$pwd
     Connect-PnPOnline -Url $global.context.Url -Credentials $userCredential 
-
 }
 
 function GetStringListCollection
 {
+    <# 
+    # Initializes a new List collection to cache the already created NAV. This will prevent any duplicate creation of the same NAV
+
+    #>
+
     return New-Object System.Collections.Generic.List[string]
 }
 

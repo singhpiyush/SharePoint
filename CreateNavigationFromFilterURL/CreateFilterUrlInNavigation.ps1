@@ -78,7 +78,7 @@ function GetField
     # Gets the SharePoint Field for which the filter URL needs to be generated
 
     # .Parameter $fieldName
-    # The name of the field. InternalName or Title
+    # The name of the field. InternalName
 
     #>
 
@@ -338,6 +338,18 @@ function GetStringListCollection
 
 function AllowNavCreation
 {
+    <#
+    # Creates the global navigation. Checks if its a parent or child and then create the nav accordingly. Also checks if a global NAV has 
+    # already been created by this script. In that case, it blocks any duplicate creation of the same NAV
+
+    # .Parameter $childNav 
+    # The new NAV to be created
+
+    # .Parameter $headerNav
+    # Header NAV for if the new NAV is a child
+
+    #>
+
     Param(
         [Parameter(mandatory=$true)]
         [string]        
@@ -371,6 +383,13 @@ function AllowNavCreation
 
 function GetFieldInternalName 
 {
+    <# Returns the internal name of a field from the list
+
+    # .Parameter $columnName
+    # Name of the column
+
+    #>
+
     Param(
         [Parameter(mandatory=$true)] $columnName
     )
@@ -380,12 +399,21 @@ function GetFieldInternalName
 
 function ParseCSV
 {
+    <# Parses the input CSV file for the NAV data
+
+    # .Parameter $csvFilePath
+    # Path of the CSV file
+
+    #>
+
     Param (
         [Parameter(mandatory=$true)] $csvFilePath
     )
 
     $csvFileContent = Import-Csv -Path $csvFilePath
     $csvLength = $csvFileContent.Count
+    
+    #Split the header name if it contains 2 or more spaces
     $csvHeaders = (($csvFileContent[0] | out-string) -split '\n')[1] -split '\s \s+'
 
     $i = -1
@@ -430,6 +458,14 @@ function ParseCSV
 
 function InitiateNavCreation
 {
+    <#
+    # Main method
+
+    # .Parameter $configFilePath
+    Configuration file path
+
+    #>
+
     Param (
         [string] $configFilePath = "E:\Piyush\Scripts\CreateFilterUrlInNavigation.psd1"
     )    
@@ -448,6 +484,11 @@ function InitiateNavCreation
 
 function ClearObjects
 {
+    <#
+    # Release memory from global objects. Close the session
+
+    #>
+
     $global.context.Dispose()
     
     $global.Clear()

@@ -384,7 +384,7 @@ function AllowNavCreation
     else
     {
         $isAllowed = $false
-        Write-Host -ForegroundColor Yellow "Already exist: $childNav"
+        Write-Log -message ("Already exist: $childNav") -logEntryType Information
     }
 
     return $isAllowed
@@ -509,15 +509,109 @@ function ClearObjects
 
 try
 {
+    PrepareLogFile
     InitiateNavCreation
 }
 catch
 {
-    Write-Host $_.Exception.Message -ForegroundColor Red
-    Write-Host $_.Exception.ItemName -ForegroundColor Red
-    Write-Host $_.Exception.StackTrace -ForegroundColor Red
+    Write-Log -message $_.Exception.Message -logEntryType Error
+    Write-Log -message $_.Exception.ItemName -logEntryType Error
+    Write-Log -message $_.Exception.StackTrace -logEntryType Error
 }
 finally
 {
     ClearObjects
+    
+    CompleteLog
+}
+
+
+function PrepareLogFile
+{
+    <#
+    # Prepares the log file
+    #>
+
+    $strartTimestamp = GetTimeStamp
+    $fileName = "NavURLLog_" + $strartTimestamp
+    $global.filePath = Join-Path $PSScriptRoot -ChildPath $fileName
+    $createEnv = @"
+=================================================
+|Script Started By   : $ENV:USERNAME
+|Script Start Time   : $Start_TimeStamp
+|Computer Name       : $Env:Computername
+=================================================
+"@
+
+
+    try
+    {
+        New-Item -ItemType File -Path $PSScriptRoot -Name $fileName  -ea Ignore | Out-Null
+    }
+    catch
+    {
+        return $false
+    }
+
+    if($?)
+    {
+        Add-Content -Value $createEnv -Path $global.filePath
+    }
+}
+
+function Write-Log
+{
+    Param(
+        [Parameter(Mandatory=$true)][String]$message,
+        [Parameter(Mandatory = $true)][ValidateSet("Information","Warning","Error")][String]$logEntryType,
+        [Parameter][Bool]$printOnScreen = $true
+    )
+
+    $timeStamp = GetTimeStamp
+    $fullMsg = $timeStamp + ": " + $logEntryType + ": " + $message
+    
+    switch($logEntryType)
+    {
+        "Information"
+        {
+            If($printOnScreen)
+            {
+                Write-Host $fullMsg -ForegroundColor Green
+            }
+            
+            break          
+        }
+
+        "Warning"
+        {
+            If($printOnScreen)
+            {
+                Write-Host $fullMsg -ForegroundColor Yellow
+            }
+            
+            break         
+        }
+
+        "Warning"
+        {
+            If($printOnScreen)
+            {
+                Write-Host $fullMsg -ForegroundColor Red
+            }
+            
+            break         
+        }
+    }
+
+    Add-Content -Value $fullMsg -Path $global.filePath
+}
+
+function CompleteLog
+{
+    Add-Content -Value "*************************************************" -Path $global.filePath
+}
+
+function GetTimeStamp
+{
+    return ([String](Get-Date (Get-Date).ToUniversalTime() -Format "dd-MM-yyyy HH:mm:ss")+" UTC")
 }

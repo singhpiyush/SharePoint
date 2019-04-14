@@ -27,26 +27,28 @@ function GetTermStore
     )
 
 
+    if($global.groupReports -eq $null)
+    {
+        $session = $spTaxSession = [Microsoft.SharePoint.Client.Taxonomy.TaxonomySession]::GetTaxonomySession($global.context)
+        $session.UpdateCache();
+        $global.context.Load($session)
 
-    $session = $spTaxSession = [Microsoft.SharePoint.Client.Taxonomy.TaxonomySession]::GetTaxonomySession($global.context)
-    $session.UpdateCache();
-    $global.context.Load($session)
+        $termStores = $session.TermStores
+        $global.context.Load($termStores)
+        $global.context.ExecuteQuery()
 
-    $termStores = $session.TermStores
-    $global.context.Load($termStores)
-    $global.context.ExecuteQuery()
+        $termStore = $TermStores[0]
+        $global.context.Load($termStore)
 
-    $termStore = $TermStores[0]
-    $global.context.Load($termStore)
+        $groups = $termStore.Groups
+        $global.context.Load($groups)
 
-    $groups = $termStore.Groups
-    $global.context.Load($groups)
+        #Loading the Term Group from the config file
+        $global.groupReports = $groups.GetByName($file.grpName)
+        $global.context.Load($global.groupReports)
+    }
 
-    #Loading the Term Group from the config file
-    $groupReports = $groups.GetByName($file.grpName)
-    $global.context.Load($groupReports)
-
-    $termSetField = $groupReports.TermSets.GetByName($termSetName)
+    $termSetField = $global.groupReports.TermSets.GetByName($termSetName)
 
     $global.context.Load($termSetField)
 

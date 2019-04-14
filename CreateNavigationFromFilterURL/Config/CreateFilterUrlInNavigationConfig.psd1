@@ -1,3 +1,10 @@
+#############################################
+# Author: Piyush K Singh
+# Email: piyushksingh11@gmail.com
+# Website: https://piyushksingh.com
+# Version: 1.0
+#############################################
+
 @{
     siteUrl = ''
     userName = ''

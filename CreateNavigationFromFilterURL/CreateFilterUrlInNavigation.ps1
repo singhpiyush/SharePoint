@@ -264,7 +264,7 @@ function ContructNavUrl
         $fieldName
     )
 
-    #/teams/SiteName/Published/Forms/AllItems.aspx?useFiltersInViewXml=1&FilterField1=QmsFrProcess&FilterValue1=28&FilterType1=Counter&FilterLookupId1=1&FilterOp1=In
+    #/teams/SiteName/Published/Forms/AllItems.aspx?useFiltersInViewXml=1&FilterField1=Process&FilterValue1=28&FilterType1=Counter&FilterLookupId1=1&FilterOp1=In
     return "{0}?useFiltersInViewXml=1&FilterField1={1}&FilterValue1={2}&FilterType1=Counter&FilterLookupId1=1&FilterOp1=In" -f $file.serverRelativeURL,$fieldName,$wssId
 }
 
@@ -479,7 +479,7 @@ function InitiateNavCreation
         [string] $configFilePath = "E:\Piyush\Scripts\CreateFilterUrlInNavigation.psd1"
     )    
 
-    $file = Import-LocalizedData -FileName "QMSFrCreateFilterUrlInNavigation.psd1"
+    $file = Import-LocalizedData -FileName "CreateFilterUrlInNavigation.psd1"
      
     $file.$pwd = $( Read-host -assecurestring "Enter Password for " $file.userName )
 

@@ -599,6 +599,7 @@ function CompleteLog
 
 function GetTimeStamp
 {
+<<<<<<< HEAD
     return ([String](Get-Date (Get-Date).ToUniversalTime() -Format "dd-MM-yyyy-HH-mm-ss"))
 }
 
@@ -632,3 +633,7 @@ finally
     
     ClearObjects
 }
+=======
+    return ([String](Get-Date (Get-Date).ToUniversalTime() -Format "dd-MM-yyyy HH:mm:ss")+" UTC")
+}
+>>>>>>> cdf9dded6ac30d44631616d282090f908e78617a

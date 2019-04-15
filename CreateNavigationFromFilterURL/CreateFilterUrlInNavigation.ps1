@@ -264,7 +264,7 @@ function ContructNavUrl
         $fieldName
     )
 
-    #/teams/SiteName/Published/Forms/AllItems.aspx?useFiltersInViewXml=1&FilterField1=QmsFrProcess&FilterValue1=28&FilterType1=Counter&FilterLookupId1=1&FilterOp1=In
+    #/teams/SiteName/Published/Forms/AllItems.aspx?useFiltersInViewXml=1&FilterField1=Process&FilterValue1=28&FilterType1=Counter&FilterLookupId1=1&FilterOp1=In
     return "{0}?useFiltersInViewXml=1&FilterField1={1}&FilterValue1={2}&FilterType1=Counter&FilterLookupId1=1&FilterOp1=In" -f $file.serverRelativeURL,$fieldName,$wssId
 }
 
@@ -320,6 +320,8 @@ function AddNavigation
         $urlNav = ContructNavUrl $wssId $fieldInternalName
 
         Add-PnPNavigationNode -Title $title  -Url $urlNav -Location "QuickLaunch" -Header $header -External
+
+        Write-Log -message ("Adding: $title") -logEntryType Information
     }
 
 }
@@ -384,7 +386,7 @@ function AllowNavCreation
     else
     {
         $isAllowed = $false
-        Write-Log -message ("Already exist: $childNav") -logEntryType Information
+        Write-Log -message ("Already exist: $childNav") -logEntryType Warning
     }
 
     return $isAllowed
@@ -479,7 +481,7 @@ function InitiateNavCreation
         [string] $configFilePath = "E:\Piyush\Scripts\CreateFilterUrlInNavigation.psd1"
     )    
 
-    $file = Import-LocalizedData -FileName "QMSFrCreateFilterUrlInNavigation.psd1"
+    $file = Import-LocalizedData -FileName "CreateFilterUrlInNavigation.psd1"
      
     $file.$pwd = $( Read-host -assecurestring "Enter Password for " $file.userName )
 
@@ -507,25 +509,6 @@ function ClearObjects
     Disconnect-PnPOnline
 }
 
-try
-{
-    PrepareLogFile
-    InitiateNavCreation
-}
-catch
-{
-    Write-Log -message $_.Exception.Message -logEntryType Error
-    Write-Log -message $_.Exception.ItemName -logEntryType Error
-    Write-Log -message $_.Exception.StackTrace -logEntryType Error
-}
-finally
-{
-    ClearObjects
-    
-    CompleteLog
-}
-
-
 function PrepareLogFile
 {
     <#
@@ -533,20 +516,23 @@ function PrepareLogFile
     #>
 
     $strartTimestamp = GetTimeStamp
-    $fileName = "NavURLLog_" + $strartTimestamp
-    $global.filePath = Join-Path $PSScriptRoot -ChildPath $fileName
+    $directoryPath = GetCurrentDirectory
+
+    $fileName = "\NavURLLog_" + $strartTimestamp + ".txt"
+
     $createEnv = @"
 =================================================
 |Script Started By   : $ENV:USERNAME
-|Script Start Time   : $Start_TimeStamp
+|Script Start Time   : $strartTimestamp
 |Computer Name       : $Env:Computername
 =================================================
 "@
 
+    $global.filePath = ($directoryPath + $fileName)
 
     try
     {
-        New-Item -ItemType File -Path $PSScriptRoot -Name $fileName  -ea Ignore | Out-Null
+        New-Item -ItemType File -Path $global.filePath
     }
     catch
     {
@@ -564,7 +550,7 @@ function Write-Log
     Param(
         [Parameter(Mandatory=$true)][String]$message,
         [Parameter(Mandatory = $true)][ValidateSet("Information","Warning","Error")][String]$logEntryType,
-        [Parameter][Bool]$printOnScreen = $true
+        [Bool]$printOnScreen = $true
     )
 
     $timeStamp = GetTimeStamp
@@ -592,7 +578,7 @@ function Write-Log
             break         
         }
 
-        "Warning"
+        "Error"
         {
             If($printOnScreen)
             {
@@ -613,5 +599,36 @@ function CompleteLog
 
 function GetTimeStamp
 {
-    return ([String](Get-Date (Get-Date).ToUniversalTime() -Format "dd-MM-yyyy HH:mm:ss")+" UTC")
+    return ([String](Get-Date (Get-Date).ToUniversalTime() -Format "dd-MM-yyyy-HH-mm-ss"))
+}
+
+function GetCurrentDirectory
+{
+    if ($psISE)
+    {
+        return Split-Path -Path $psISE.CurrentFile.FullPath        
+    }
+    else
+    {
+        return $global:PSScriptRoot
+    }
+}
+
+
+try
+{
+    PrepareLogFile
+    InitiateNavCreation
+}
+catch
+{
+    Write-Log -message $_.Exception.Message -logEntryType Error
+    Write-Log -message $_.Exception.ItemName -logEntryType Error
+    Write-Log -message $_.Exception.StackTrace -logEntryType Error
+}
+finally
+{
+    CompleteLog
+    
+    ClearObjects
 }

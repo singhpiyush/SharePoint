@@ -8,8 +8,9 @@ import {
 } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'PkDatesValidationWebPartStrings';
-import PkDatesValidation from './components/PkDatesValidation';
+import BodyContent from './components/BodyContent/BodyContent';
 import { IPkDatesValidationProps } from './components/IPkDatesValidationProps';
+import { IIconProps } from 'office-ui-fabric-react';
 
 export interface IPkDatesValidationWebPartProps {
   description: string;
@@ -18,11 +19,8 @@ export interface IPkDatesValidationWebPartProps {
 export default class PkDatesValidationWebPart extends BaseClientSideWebPart<IPkDatesValidationWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IPkDatesValidationProps > = React.createElement(
-      PkDatesValidation,
-      {
-        description: this.properties.description
-      }
+    const element: React.ReactElement = React.createElement(
+      BodyContent
     );
 
     ReactDom.render(element, this.domElement);

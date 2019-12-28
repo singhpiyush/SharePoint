@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "pk-dates-validation-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/pkDatesValidation/PkDatesValidationWebPart.js",
+          "manifest": "./src/webparts/pkDatesValidation/PkDatesValidationWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "PkDatesValidationWebPartStrings": "lib/webparts/pkDatesValidation/loc/{locale}.js"
+  }
+}

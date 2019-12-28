@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spfx-block-dates-validation-client-side-solution",
+    "id": "30dd1146-8b4a-45d4-9d6e-633de8ef2667",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "isDomainIsolated": false
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-block-dates-validation.sppkg"
+  }
+}

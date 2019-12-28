@@ -1,3 +1,7 @@
+/*
+    Snowflake: https://github.com/Artimon/pure-css-snowfall
+*/
+
 import * as React from 'react';
 
 import * as styles from './SnowFlakes.module.scss';

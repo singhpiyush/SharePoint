@@ -1,26 +1,5 @@
-## spfx-block-dates-validation
+# SPFx DatePicker Validation: Prevent Selection
 
-This is where you include your WebPart documentation.
+In this sample, I've demostrated one of the way to perform a validation on the Office Fbric UI DatePicker's control. In this sample, I'm blocking the validated dates from selection.
 
-### Building the code
-
-```bash
-git clone the repo
-npm i
-npm i -g gulp
-gulp
-```
-
-This package produces the following:
-
-* lib/* - intermediate-stage commonjs build artifacts
-* dist/* - the bundled script, along with other resources
-* deploy/* - all resources which should be uploaded to a CDN.
-
-### Build options
-
-gulp clean - TODO
-gulp test - TODO
-gulp serve - TODO
-gulp bundle - TODO
-gulp package-solution - TODO
+More description can be found in my [blogpost] (<https://piyushksingh.com/2019/12/30/spfx-datepicker-validation:-prevent-selection/>)

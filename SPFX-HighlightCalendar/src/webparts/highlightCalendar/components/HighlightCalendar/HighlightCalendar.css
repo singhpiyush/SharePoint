@@ -1,0 +1,11 @@
+.tui-full-calendar-month {
+  border: 1px solid gray;
+}
+
+.tui-full-calendar-weekday-grid-date-decorator {
+  background-color: '[theme: themePrimary]' !important;
+}
+
+.tui-full-calendar-month-guide-block {
+  display: none !important;
+}

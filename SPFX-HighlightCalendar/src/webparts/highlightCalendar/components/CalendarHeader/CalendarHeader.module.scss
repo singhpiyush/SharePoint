@@ -1,0 +1,44 @@
+.stackCommon {
+  display: flex;
+}
+
+.stackLeft {
+  align-items: 'center';
+  justify-content: 'flex-start';
+  width: 25%;
+}
+
+.stackCenter {
+  align-items: 'center';
+  justify-content: 'center';
+  width: 50%;
+}
+
+.stackRight {
+  align-items: 'center';
+  justify-content: 'flex-end';
+  width: 25%;
+}
+
+.monthDropdown {
+  width: 150px;
+  text-align: center;
+}
+
+.lineHeader {
+  height: 4px;
+  background-color: '[theme: themePrimary]';
+  margin-bottom: 10px;
+}
+
+.stackParent {
+  margin: 10px 0;
+}
+
+.monthLabel {
+  font-size: 1.7em;
+}
+
+.themeColor {
+  color: '[theme: themePrimary]';
+}

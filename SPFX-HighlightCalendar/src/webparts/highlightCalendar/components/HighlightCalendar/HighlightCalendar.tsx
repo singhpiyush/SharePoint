@@ -92,7 +92,52 @@ const calendarOptions = {
     useDetailPopup: false,
     useCreationPopup: false,
     disableDblClick: false,
-    disableClick: true
+    disableClick: true,
+    schedules: [
+        {
+            id: '1',
+            calendarId: '0',
+            title: 'TOAST UI Calendar Study',
+            category: 'time',
+            dueDateClass: styles.fullDayEffect,
+            start: new Date(),
+            end: new Date(),
+            bgColor: 'red',
+            isAllDay: true
+        },
+        {
+            id: '2',
+            calendarId: '0',
+            title: 'Practice',
+            category: 'milestone',
+            dueDateClass: '',
+            start: new Date((new Date()).setDate(new Date().getDate() + 5)),
+            end: new Date((new Date()).setDate(new Date().getDate() + 7)),
+            isReadOnly: true,
+            bgColor: 'blue'
+        },
+        {
+            id: '3',
+            calendarId: '0',
+            title: 'FE Workshop',
+            category: 'allday',
+            dueDateClass: '',
+            start: new Date((new Date()).setDate(new Date().getDate() + 10)),
+            end: new Date((new Date()).setDate(new Date().getDate() + 13)),
+            isReadOnly: true,
+            bgColor: 'yellow'
+        },
+        {
+            id: '4',
+            calendarId: '0',
+            title: 'Report',
+            category: 'time',
+            dueDateClass: '',
+            start: new Date((new Date()).setDate(new Date().getDate() + 20)),
+            end: new Date((new Date()).setDate(new Date().getDate() + 25)),
+            bgColor: 'red'
+        }
+    ]
 };
 
 // const dropdownOptions: IDropdownOption[] = [{

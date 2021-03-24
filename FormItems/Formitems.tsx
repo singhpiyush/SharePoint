@@ -188,6 +188,7 @@ const FormItems: React.FunctionComponent<Partial<IFormItemsProps>> = (props) => 
 
     const insertCheckBox = (): JSX.Element => <Checkbox
         key={props.controlKey}
+		disabled={props.disabled}
         defaultChecked={props.controlProps.defaultValue != null && props.controlProps.defaultValue != undefined && props.controlProps.defaultValue === props.controlProps.checkBox.trueValue}
         onChange={(ev: React.FormEvent<HTMLElement>, isChecked: boolean) => props.callback(props.controlKey, isChecked.toString())} />;
 

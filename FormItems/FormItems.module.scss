@@ -1,0 +1,65 @@
+
+.formItems {
+
+    .errLabel {
+        font-size: 11px;
+        font-style: italic;
+        color: red !important;
+    }
+
+    :global {
+        .ms-Label {
+            font-weight: bold;
+        }
+
+        .ms-Stack {
+            align-items: center;
+        }
+    }
+
+    .errBox {
+        span, textarea, input {
+            //background-color: rgb(253, 237, 237);
+            //background-color: #fde9e9;
+            border: 1px solid red !important;
+        }
+
+        :global {
+            .ms-ComboBox {
+                border: 1px solid red;
+
+                input {
+                    border: none !important;
+                }
+            }
+        }
+    }
+
+    button {
+        border-radius: 3px;
+    }
+
+    img {
+        width: 12px;
+        height: 12px;
+        background: #FFFFA3;
+        border-radius: 50%;
+        margin-left: 20px !important;
+    }
+
+    .required {
+        
+        &::after {
+            content: "*";
+            color: rgb(164, 38, 44);
+            position: absolute;
+        }
+    }
+
+}
+
+:global {
+    button:disabled {
+        color: rgba(16, 16, 16, 0.3) !important;
+    }
+}

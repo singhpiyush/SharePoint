@@ -77,7 +77,7 @@ const FormItems: React.FunctionComponent<Partial<IFormItemsProps>> = (props) => 
         placeholder={props.controlProps.placeholder}
         //label={props.controlProps.textLabel}
         isRequired={props.controlProps.isRequired}
-        initialPickerDate={props.controlProps.defaultValue ? new Date(props.controlProps.defaultValue) : null}
+        //initialPickerDate={props.controlProps.defaultValue ? new Date(props.controlProps.defaultValue) : null}
         //value={props.controlProps.defaultValue && new Date(+props.controlProps.defaultValue)}
         value={formatDateValue()}
         className={props.controlProps.className}
